@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Requirements
 
-Things you may want to cover:
+* Ruby 3.0.2
+* Rails 6.1
 
-* Ruby version
+* SQLite
 
-* System dependencies
+### Installation
 
-* Configuration
+* `bundle install`
+* `bundle exec rails db:create db:migrate db:seed`
 
-* Database creation
+* `bundle exec rails server`
 
-* Database initialization
+Open browser and go to http://localhost:3000
 
-* How to run the test suite
+### Optional
 
-* Services (job queues, cache servers, search engines, etc.)
+By default only the teams data is available in the database, the battings data will be populated once user upload the csv file. If you need to prepopulating the battings data you can use a rake task by run this command :
 
-* Deployment instructions
+`bundle exec rake import:battings`
 
-* ...
+**Note :**
+
+Sample CSV files (Teams.csv and Batting.csv) could be found under doc directory inside the rails application
