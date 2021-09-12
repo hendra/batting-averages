@@ -8,10 +8,13 @@
 
 require 'csv'
 
+Team.in_batches(of: 10000).destroy_all
+
 file = File.join(Rails.root, 'doc', 'Teams.csv')
 
+records = []
 CSV.foreach(file, headers: true) do |row|
-  Team.create({
+  records << Team.new({
     year_id: row[0].to_i,
     lg_id:   row[1],
     team_id: row[2],
@@ -33,3 +36,5 @@ CSV.foreach(file, headers: true) do |row|
     team_id_retro: row[18]
   })
 end
+
+Team.import records

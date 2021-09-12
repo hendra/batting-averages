@@ -1,16 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Battings</h1>
+<h1>Battings Average</h1>
 
 <%= form_tag('/battings', multipart: true) do -%>
-  <%= file_field_tag 'attachment' %>
-  <div><%= submit_tag 'Upload' %></div>
+  <div class="mb-3">
+    <label for="file" class="form-label">File</label>
+    <%= file_field_tag 'attachment', class: 'btn btn-primary' %>
+  </div>
+
+  <div class="mb-3">
+    <%= submit_tag 'Upload', disabled: true, id: 'submit', class: 'btn btn-primary' %>
+  </div>
 <% end -%>
 
-<%= select_year(Date.today, start_year: Batting.distinct.pluck(:year_id).min, end_year: Batting.distinct.pluck(:year_id).max, include_blank: true) -%>
-<%= select("team", "team_id", Team.order(:name).distinct.pluck(:name), { include_blank: true }, { id: 'team_name' }) -%>
+<fieldset class="border p-2">
+  <legend class="w-auto">Filters</legend>
+  <div class="mb-3">
+    <label for="year" class="form-label">Year</label>
+    <%= select_year(params[:year].to_i, { start_year: batting_start_year, end_year: batting_end_year, include_blank: true }, { class: "form-select" }) -%>
+  </div>
 
-<table>
+  <div class="mb-3">
+    <label for="Team" class="form-label">Team</label>
+    <%= select("team", "team_id", options_for_select(team_names, params[:team_id]), { include_blank: true }, { id: 'team_name', class: "form-select" }) -%>
+  </div>
+</fieldset>
+
+<table class="table">
   <thead>
     <tr>
       <th>Player</th>
@@ -25,8 +41,8 @@
       <tr>
         <td><%= batting.player_id %></td>
         <td><%= batting.year_id %></td>
-        <td><%= batting.tid %></td>
-        <td><%= number_with_precision(batting.total_h/batting.total_ab, precision: 3) rescue nil %></td>
+        <td><%= teams(batting) %></td>
+        <td><%= batting_average(batting) %></td>
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +50,4 @@
 
 <br>
 
-<%= paginate @battings %>
+<%= paginate @battings, theme: 'bootstrap-5' %>
