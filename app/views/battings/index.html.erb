@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Battings</h1>
+
+<%= form_tag('/battings', multipart: true) do -%>
+  <%= file_field_tag 'attachment' %>
+  <div><%= submit_tag 'Upload' %></div>
+<% end -%>
+
+<%= select_year(Date.today, start_year: Batting.distinct.pluck(:year_id).min, end_year: Batting.distinct.pluck(:year_id).max, include_blank: true) -%>
+<%= select("team", "team_id", Team.order(:name).distinct.pluck(:name), { include_blank: true }, { id: 'team_name' }) -%>
+
+<table>
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Year</th>
+      <th>Team Name (s)</th>
+      <th>Batting Average</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @battings.each do |batting| %>
+      <tr>
+        <td><%= batting.player_id %></td>
+        <td><%= batting.year_id %></td>
+        <td><%= batting.tid %></td>
+        <td><%= number_with_precision(batting.total_h/batting.total_ab, precision: 3) rescue nil %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= paginate @battings %>
