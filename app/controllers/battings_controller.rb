@@ -8,7 +8,8 @@ class BattingsController < ApplicationController
     conditions[:team_id] = params[:team_id] if params[:team_id].present?
     @battings = Batting.where(conditions)
                         .group(:player_id, :year_id)
-                        .select("*, SUM(ab) as total_ab, SUM(h) as total_h, GROUP_CONCAT(team_id, ',') as tids")
+                        .select("*, SUM(ab) AS total_ab, SUM(h) AS total_h, GROUP_CONCAT(team_id, ',') AS tids, (CAST(SUM(h) AS float)/CAST(SUM(ab) AS float)) AS ba")
+                        .order('ba ASC')
                         .page(params[:page])
   end
 
