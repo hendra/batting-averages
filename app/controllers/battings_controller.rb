@@ -6,7 +6,7 @@ class BattingsController < ApplicationController
     conditions = {}
     conditions[:year_id] = params[:year] if params[:year].present?
     conditions[:team_id] = params[:team_id] if params[:team_id].present?
-    sql = "*, SUM(ab) AS total_ab, SUM(h) AS total_h, GROUP_CONCAT(team_id, ',') AS tids, (CAST(SUM(h) AS float)/CAST(SUM(ab) AS float)) AS ba"
+    sql = "*, SUM(ab) AS total_ab, SUM(h) AS total_h, GROUP_CONCAT(team_id, ',') AS tids, (CAST(SUM(h) AS float) / CAST(SUM(ab) AS float)) AS ba"
     @battings = Batting.where(conditions)
                         .group(:player_id, :year_id)
                         .select(sql)

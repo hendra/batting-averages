@@ -17,7 +17,7 @@
   <legend class="w-auto">Filters</legend>
   <div class="mb-3">
     <label for="year" class="form-label">Year</label>
-    <%= select_year(params[:year].to_i, { start_year: batting_start_year, end_year: batting_end_year, include_blank: true }, { class: "form-select" }) -%>
+    <%= select_year(params[:year].to_i, { start_year: batting_years.min, end_year: batting_years.max, include_blank: true }, { class: "form-select" }) -%>
   </div>
 
   <div class="mb-3">
@@ -41,7 +41,7 @@
       <tr>
         <td><%= batting.player_id %></td>
         <td><%= batting.year_id %></td>
-        <td><%= teams(batting) %></td>
+        <td><%= formatted_team_names(batting) %></td>
         <td><%= number_with_precision(batting.ba.to_f, precision: 3) %></td>
       </tr>
     <% end %>
