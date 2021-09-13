@@ -42,7 +42,7 @@
         <td><%= batting.player_id %></td>
         <td><%= batting.year_id %></td>
         <td><%= teams(batting) %></td>
-        <td><%= number_with_precision(batting.ba, precision: 3) %></td>
+        <td><%= number_with_precision(batting.ba.to_f, precision: 3) %></td>
       </tr>
     <% end %>
   </tbody>
